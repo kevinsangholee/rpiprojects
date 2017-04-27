@@ -1,3 +1,6 @@
+# This program mimics a "Simon Says" type of game on the RPi using 3 LEDs
+# and 3 Buttons corresponding to those LEDs.
+
 import RPi.GPIO as GPIO
 import time
 
@@ -18,17 +21,17 @@ GPIO.setup(yButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 try:
     while True:
-        if(GPIO.input(gButton)):
+        if(not GPIO.input(gButton)):
             print 'Green pressed'
             GPIO.output(green, 1)
             time.sleep(1)
             GPIO.output(green, 0)
-        if(GPIO.input(rButton)):
+        if(not GPIO.input(rButton)):
             print 'Red pressed'
             GPIO.output(red, 1)
             time.sleep(1)
             GPIO.output(red, 0)
-        if(GPIO.input(yButton)):
+        if(not GPIO.input(yButton)):
             print 'Yellow pressed'
             GPIO.output(yellow,1)
             time.sleep(1)
