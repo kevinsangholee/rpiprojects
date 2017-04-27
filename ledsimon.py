@@ -26,7 +26,7 @@ sequence = []
 def create_sequence(num):
     sequence = []
     for i in range(0,num):
-        sequence.append(randint(0,2))
+        sequence.append(getPin(randint(0,2)))
 
 def getPin(n):
     if n == 0:
@@ -48,6 +48,7 @@ try:
         print "Playing sequence..."
         time.sleep(2)
         create_sequence(3)
+        print sequence
         play_sequence(sequence)
 
         """if(not GPIO.input(gButton)):
