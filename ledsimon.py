@@ -51,6 +51,7 @@ def play_sequence(lst):
 def play_game(lev):
     sequence = create_sequence(lev)
     print "Playing sequence for level " + str(lev) + "..."
+    print sequence
     play_sequence(sequence)
     current = 0
     color = sequence[0]
@@ -59,6 +60,7 @@ def play_game(lev):
             return True
         else:
             color = sequence[current]
+            print "Listening for " + str(color)
             if color == green:
                 if not GPIO.input(gButton):
                     GPIO.output(green, 1)
