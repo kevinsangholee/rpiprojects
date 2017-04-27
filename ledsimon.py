@@ -24,9 +24,10 @@ level = 1
 sequence = []
 
 def create_sequence(num):
-    sequence = []
+    seq = []
     for i in range(0,num):
-        sequence.append(getPin(randint(0,2)))
+        seq.append(getPin(randint(0,2)))
+    return seq
 
 def getPin(n):
     if n == 0:
@@ -47,7 +48,7 @@ try:
     while True:
         print "Playing sequence..."
         time.sleep(2)
-        create_sequence(3)
+        sequence = create_sequence(3)
         print sequence
         play_sequence(sequence)
 
