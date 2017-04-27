@@ -23,12 +23,14 @@ GPIO.setup(yButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 level = 1
 sequence = []
 
+# Creates a random sequence of length num, consisting of 3 colors
 def create_sequence(num):
     seq = []
     for i in range(0,num):
         seq.append(getPin(randint(0,2)))
     return seq
 
+# Gets the pin number for each random integer
 def getPin(n):
     if n == 0:
         return green
@@ -37,36 +39,70 @@ def getPin(n):
     else:
         return yellow
 
+# Plays the random sequence on the LEDs
 def play_sequence(lst):
     for n in lst:
-        GPIO.output(getPin(n), 1)
+        color = getPin(n)
+        GPIO.output(color, 1)
         time.sleep(.2)
-        GPIO.output(getPin(n), 0)
+        GPIO.output(color, 0)
         time.sleep(.2)
+
+def play_game(lev):
+    sequence = create_sequence(lev)
+    print "Playing sequence for level " + str(lev) + "..."
+    play_sequence(sequence)
+    current = 0
+    color = sequence[0]
+    while True:
+        if current == len(sequence):
+            return True
+        else:
+            color = sequence[current]
+            if color == green:
+                if not GPIO.input(gButton):
+                    GPIO.output(green, 1)
+                    time.sleep(0.2)
+                    GPIO.output(green, 0)
+                    current += 1
+                    time.sleep(0.2)
+                if not GPIO.input(rButton) or not GPIO.input(yButton):
+                    return False
+            if color == red:
+                if not GPIO.input(rButton):
+                    GPIO.output(red, 1)
+                    time.sleep(0.2)
+                    GPIO.output(red, 0)
+                    current += 1
+                    time.sleep(0.2)
+                if not GPIO.input(gButton) or not GPIO.input(yButton):
+                    return False
+            if color == yellow:
+                if not GPIO.input(yButton):
+                    GPIO.output(yellow, 1)
+                    time.sleep(0.2)
+                    GPIO.output(yellow, 0)
+                    current += 1
+                    time.sleep(0.2)
+                if not GPIO.input(gButton) or not GPIO.input(rButton):
+                    return False
+
 
 try:
     while True:
-        print "Playing sequence..."
-        time.sleep(2)
-        sequence = create_sequence(3)
-        print sequence
-        play_sequence(sequence)
-
-        """if(not GPIO.input(gButton)):
-            print 'Green pressed'
+        print "Playing level..."
+        if play_game(level):
+            level += 1
+        else:
             GPIO.output(green, 1)
-            time.sleep(1)
-            GPIO.output(green, 0)
-        if(not GPIO.input(rButton)):
-            print 'Red pressed'
             GPIO.output(red, 1)
-            time.sleep(1)
+            GPIO.output(yellow, 1)
+            time.sleep(.2)
+            GPIO.output(green, 0)
             GPIO.output(red, 0)
-        if(not GPIO.input(yButton)):
-            print 'Yellow pressed'
-            GPIO.output(yellow,1)
-            time.sleep(1)
-            GPIO.output(yellow,0)"""
+            GPIO.output(yellow, 0)
+            quit()
+
 except KeyboardInterrupt:
     GPIO.output(green, 0)
     GPIO.output(red, 0)
