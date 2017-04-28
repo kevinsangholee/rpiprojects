@@ -60,7 +60,6 @@ def play_game(lev):
             return True
         else:
             color = sequence[current]
-            print "Listening for " + str(color)
             if color == green:
                 if not GPIO.input(gButton):
                     GPIO.output(green, 1)
