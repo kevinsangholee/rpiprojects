@@ -20,14 +20,16 @@ GPIO.setup(gButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(rButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(yButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-level = 1
 sequence = []
 
 # Creates a random sequence of length num, consisting of 3 colors
-def create_sequence(num):
+def create_sequence():
     seq = []
-    for i in range(0,num):
-        seq.append(getPin(randint(0,2)))
+    seq.append(getPin(randint(0,2)))
+    return seq
+
+def add_note(seq):
+    seq.append(getPin(randint(0,2)))
     return seq
 
 # Gets the pin number for each random integer
@@ -47,9 +49,8 @@ def play_sequence(lst):
         GPIO.output(color, 0)
         time.sleep(.2)
 
-def play_game(lev):
-    sequence = create_sequence(lev)
-    print "Playing sequence for level " + str(lev) + "..."
+def play_game():
+    print "Playing sequence...""
     print sequence
     play_sequence(sequence)
     current = 0
@@ -89,10 +90,12 @@ def play_game(lev):
 
 
 try:
+    sequence = create_sequence()
     while True:
         print "Playing level..."
-        if play_game(level):
-            level += 1
+        if play_game():
+            time.sleep(1)
+            sequence = add_note(sequence)
         else:
             GPIO.output(green, 1)
             GPIO.output(red, 1)
