@@ -42,7 +42,6 @@ def getPin(n):
 # Plays the random sequence on the LEDs
 def play_sequence(lst):
     for n in lst:
-        color = getPin(n)
         GPIO.output(color, 1)
         time.sleep(.2)
         GPIO.output(color, 0)
@@ -102,6 +101,7 @@ try:
             GPIO.output(green, 0)
             GPIO.output(red, 0)
             GPIO.output(yellow, 0)
+            GPIO.cleanup()
             quit()
 
 except KeyboardInterrupt:
